@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diffraction Studio</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="controls">
+      <div class="group">
+        <label for="mode">Mode</label>
+        <select id="mode">
+          <option value="single">Single wave</option>
+          <option value="poly">Polychromatic</option>
+        </select>
+      </div>
+
+      <div class="group mode-single">
+        <label for="single-lambda">Wavelength (nm)</label>
+        <input id="single-lambda" type="number" min="380" max="780" step="1" value="550">
+      </div>
+
+      <div class="group mode-poly">
+        <label for="poly-min">Poly min (nm)</label>
+        <input id="poly-min" type="number" min="380" max="780" step="1" value="420">
+      </div>
+
+      <div class="group mode-poly">
+        <label for="poly-max">Poly max (nm)</label>
+        <input id="poly-max" type="number" min="380" max="780" step="1" value="680">
+      </div>
+
+      <div class="group mode-poly">
+        <label for="poly-samples">Poly samples</label>
+        <input id="poly-samples" type="number" min="3" max="21" step="2" value="9">
+      </div>
+
+      <div class="group">
+        <label for="resolution">Resolution</label>
+        <select id="resolution">
+          <option value="128">128</option>
+          <option value="256" selected>256</option>
+          <option value="512">512</option>
+        </select>
+      </div>
+
+      <div class="group">
+        <label for="preset">Preset</label>
+        <select id="preset">
+          <option value="round">Round aperture</option>
+          <option value="slits">Slits</option>
+          <option value="jwst">JWST</option>
+        </select>
+      </div>
+
+      <button id="load-preset" type="button">Load preset</button>
+      <button id="clear-mask" type="button">Clear</button>
+      <button id="reset-app" type="button">Reset</button>
+    </header>
+
+    <p id="status" class="status" aria-live="polite"></p>
+
+    <section class="panes">
+      <article>
+        <h2>Diffraction object</h2>
+        <canvas id="mask-canvas" width="512" height="512"></canvas>
+      </article>
+      <article>
+        <h2>Diffraction pattern</h2>
+        <canvas id="pattern-canvas" width="512" height="512"></canvas>
+      </article>
+    </section>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
