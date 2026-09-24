@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Draw an aperture and explore its diffraction pattern in real time.">
+  <title>Diffraction Studio</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app">
+    <h1 class="app-title">Diffraction Studio</h1>
+    <header class="controls" aria-label="Simulation controls">
+      <div class="group">
+        <label for="mode">Light</label>
+        <select id="mode">
+          <option value="single">Single wavelength</option>
+          <option value="poly">Polychromatic</option>
+        </select>
+      </div>
+
+      <div class="group mode-single">
+        <label for="single-lambda">Wavelength (nm)</label>
+        <input id="single-lambda" type="number" min="380" max="780" step="1" value="550">
+      </div>
+
+      <div class="group mode-poly" hidden>
+        <label for="poly-min">Shortest wavelength (nm)</label>
+        <input id="poly-min" type="number" min="380" max="780" step="1" value="420">
+      </div>
+
+      <div class="group mode-poly" hidden>
+        <label for="poly-max">Longest wavelength (nm)</label>
+        <input id="poly-max" type="number" min="380" max="780" step="1" value="680">
+      </div>
+
+      <div class="group mode-poly" hidden>
+        <label for="poly-samples">Colour samples</label>
+        <input id="poly-samples" type="number" min="3" max="21" step="2" value="9">
+      </div>
+
+      <div class="group">
+        <label for="resolution">Resolution</label>
+        <select id="resolution">
+          <option value="128">128 × 128</option>
+          <option value="256" selected>256 × 256</option>
+          <option value="512">512 × 512</option>
+        </select>
+      </div>
+
+      <div class="group">
+        <label for="preset">Aperture preset</label>
+        <select id="preset">
+          <option value="round">Round opening</option>
+          <option value="slits">Double slit</option>
+          <option value="jwst">JWST mirror</option>
+        </select>
+      </div>
+
+      <button id="load-preset" type="button">Load preset</button>
+      <button id="clear-mask" type="button">Clear</button>
+      <button id="reset-app" type="button">Reset</button>
+    </header>
+
+    <p id="status" class="status" role="status" aria-live="polite">Preparing simulation…</p>
+
+    <section class="panes" aria-label="Aperture and diffraction pattern">
+      <article>
+        <h2>Draw the aperture</h2>
+        <canvas id="mask-canvas" width="512" height="512" aria-label="Aperture editor. Draw to open the mask, or hold Shift to erase." tabindex="0"></canvas>
+      </article>
+      <article>
+        <h2>Far-field pattern</h2>
+        <canvas id="pattern-canvas" width="512" height="512" aria-label="Calculated diffraction intensity pattern"></canvas>
+      </article>
+    </section>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
