@@ -1,61 +1,25 @@
-# Diffraction Interactive Web App
+# Diffraction Studio
 
-This repository now includes a static web application for interactive diffraction simulation.
-
-## Web app location
-
-- `/home/runner/work/Diffraction/Diffraction/web/index.html`
-- `/home/runner/work/Diffraction/Diffraction/web/app.js`
-- `/home/runner/work/Diffraction/Diffraction/web/styles.css`
-
-## Features
-
-- Two-pane interface:
-  - Left: editable diffraction object (draw/erase directly on canvas)
-  - Right: live diffraction pattern preview
-- Illumination modes:
-  - Single wave (user-defined wavelength from 380 to 780 nm)
-  - Polychromatic (user-defined min/max wavelength window and sample count)
-- Presets:
-  - Round aperture
-  - Slits
-  - JWST-inspired segmented aperture
-- Realtime pipeline with throttled recomputation for smooth interaction.
-- Resolution controls with bounded values (128, 256, 512).
-- Aperture state serialization format (versioned object with resolution and mask array) for future import/upload features.
+A static, browser based diffraction demo. Draw an aperture, choose a wavelength or spectrum, and see the far-field intensity pattern update as you work.
 
 ## Run locally
 
-Use any static file server from repository root:
+Serve the repository root with any static file server, then open /web/ in the browser. The worker is loaded relative to the web app, so keep the files together when deploying.
 
-```bash
-cd /home/runner/work/Diffraction/Diffraction
-python -m http.server 8000
-```
+## Interaction
 
-Then open:
+- Draw with a mouse, pen, or touch. Hold Shift or use the right mouse button to erase.
+- Choose a single wavelength or a polychromatic spectrum from 380 to 780 nm.
+- Compare 128, 256, and 512 pixel aperture resolutions.
+- Load the round, double slit, or JWST-inspired aperture presets.
+- Clear or reset the current aperture and controls.
 
-- `http://localhost:8000/web/index.html`
+## How the live rendering works
 
-## Deploy on octavejagora.com
+The UI samples the aperture and sends a transferable copy to a Web Worker. The worker computes one 2D Fourier transform, then maps the reference intensity pattern to each selected wavelength before composing the colour result. This keeps the browser's main thread available for drawing and control input, including at the highest resolution.
 
-This app is static and can be deployed to any static host:
+The simulation uses a scalar Fraunhofer model with logarithmic intensity display. The displayed spectrum uses evenly spaced wavelength samples and an approximate wavelength-to-RGB mapping; it is intended as an interactive educational visualization rather than a calibrated optical instrument.
 
-1. Publish the `/home/runner/work/Diffraction/Diffraction/web/` directory.
-2. Keep asset-relative paths unchanged.
-3. Serve `index.html` as the entry point (for example at `/diffraction/`).
+The aperture state can also be read or restored through window.diffractionApp.getApertureState() and window.diffractionApp.setApertureState(state). The version 1 state contains a resolution and a flat binary mask array.
 
-## Visual verification workflow
-
-Before publishing, verify the presets manually:
-
-1. Load `JWST` preset and compare overall structure against `/home/runner/work/Diffraction/Diffraction/resources/renders/JWST_POLY_10.png`.
-2. Load `Round aperture` preset in polychromatic mode and compare color spread against `/home/runner/work/Diffraction/Diffraction/resources/renders/WHITE_10.png`.
-3. Load `Slits` preset and verify expected fringe symmetry and spacing consistency versus prior script outputs.
-
-## Original Python prototypes
-
-The original numerical prototypes are kept for reference:
-
-- `/home/runner/work/Diffraction/Diffraction/src/diffraction/white_light.py`
-- `/home/runner/work/Diffraction/Diffraction/src/diffraction/JWST.py`
+The app is self-contained and has no backend or build step. Deploy the contents of web/ under a path such as /diffraction/ and preserve the relative paths to app.js, diffraction-worker.js, and styles.css.

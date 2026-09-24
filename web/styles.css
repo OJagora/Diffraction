@@ -1,25 +1,40 @@
 :root {
   color-scheme: dark;
   font-family: Inter, system-ui, sans-serif;
+  background: #0d1117;
+  color: #e6edf3;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
+  min-width: 320px;
   margin: 0;
   background: #0d1117;
   color: #e6edf3;
 }
 
 .app {
-  padding: 1rem;
   display: grid;
+  max-width: 1280px;
   gap: 0.75rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.app-title {
+  margin: 0.1rem 0 0;
+  font-size: 1.25rem;
+  font-weight: 650;
 }
 
 .controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
   align-items: end;
+  gap: 0.75rem;
   padding: 0.75rem;
   border: 1px solid #30363d;
   border-radius: 8px;
@@ -28,23 +43,25 @@ body {
 
 .group {
   display: grid;
-  gap: 0.35rem;
   min-width: 9rem;
+  gap: 0.35rem;
 }
 
 label {
-  font-size: 0.85rem;
   color: #9ba7b4;
+  font-size: 0.85rem;
 }
 
 input,
 select,
 button {
-  background: #0d1117;
-  color: #e6edf3;
+  min-height: 2.5rem;
   border: 1px solid #30363d;
   border-radius: 6px;
   padding: 0.45rem 0.6rem;
+  background: #0d1117;
+  color: #e6edf3;
+  font: inherit;
 }
 
 button {
@@ -55,23 +72,33 @@ button:hover {
   border-color: #58a6ff;
 }
 
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+canvas:focus-visible {
+  outline: 2px solid #58a6ff;
+  outline-offset: 2px;
+}
+
 .status {
+  min-height: 1.5rem;
   margin: 0;
-  min-height: 1.25rem;
-  color: #8b949e;
+  color: #9ba7b4;
+  font-size: 0.9rem;
 }
 
 .panes {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
 article {
+  min-width: 0;
   border: 1px solid #30363d;
   border-radius: 8px;
-  background: #161b22;
   padding: 0.75rem;
+  background: #161b22;
 }
 
 h2 {
@@ -80,11 +107,31 @@ h2 {
 }
 
 canvas {
+  display: block;
   width: 100%;
   max-width: 512px;
   aspect-ratio: 1 / 1;
   border: 1px solid #30363d;
-  image-rendering: pixelated;
   background: #000;
+  image-rendering: pixelated;
   touch-action: none;
+}
+
+@media (max-width: 560px) {
+  .app {
+    padding: 0.65rem;
+  }
+
+  .controls {
+    gap: 0.55rem;
+  }
+
+  .group {
+    flex: 1 1 8rem;
+    min-width: 7.5rem;
+  }
+
+  .controls > button {
+    flex: 1 1 5rem;
+  }
 }
